@@ -1,6 +1,6 @@
 {
   "name": "backup-planner",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Plan, document, and implement a backup and data-protection strategy for the current project — from architecture discovery through script generation and restore drills.",
   "author": {
     "name": "Daniel Rosehill",

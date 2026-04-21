@@ -15,6 +15,17 @@ The user likely has standing backup infrastructure — cloud object storage acco
 - **Existing backup tooling**: restic/borg/kopia repos already in use, their locations and purpose
 - **Offsite partners**: anyone else's infrastructure the user backs up to (or receives backups from)
 
+## Migration from legacy path (one-time)
+
+Before resolving the data directory, check for legacy data at these paths:
+- `~/.claude/projects/-home-*/memory/reference_backup_*.md`
+
+For each legacy file that exists AND where `<plugin-data-dir>/references/backup_<short-name>.md` does NOT exist, move it to the new location (renamed without the `reference_` prefix — e.g. `reference_backup_b2.md` → `backup_b2.md`) and delete the legacy file. Tell the user: "Migrated <n> backup-destination reference files from ~/.claude/projects/.../memory/ to <new>."
+
+## Path resolution
+
+Resolve the plugin's data directory as `$CLAUDE_USER_DATA/backup-planner/` if `CLAUDE_USER_DATA` is set; otherwise `$XDG_DATA_HOME/claude-plugins/backup-planner/` if `XDG_DATA_HOME` is set; otherwise `~/.local/share/claude-plugins/backup-planner/`. Create the directory (and a `references/` subdirectory) if it doesn't exist. See the canonical convention in the `meta-tools:plugin-data-storage` skill.
+
 ## Steps
 
 1. **Ask the user** to list what they have available for this project. Phrase it as "what backup destinations do you already have provisioned" rather than "what do you want to use" — you want the superset, not a pre-filtered choice.
@@ -25,9 +36,8 @@ The user likely has standing backup infrastructure — cloud object storage acco
    - Access method (credentials location — never the credentials themselves)
    - Cost profile (egress-free? per-GB? flat?)
    - Whether it's already holding other backups (shared repo) or fresh
-3. **Write one memory file per destination** under `~/.claude/projects/-home-daniel/memory/` using the `reference` type. Filename pattern: `reference_backup_<short-name>.md`.
-4. **Update `MEMORY.md`** with a one-line pointer for each.
-5. **Deduplicate** — if a destination is already recorded, update the existing entry rather than creating a new one.
+3. **Write one reference file per destination** under `<plugin-data-dir>/references/`. Filename pattern: `backup_<short-name>.md`.
+4. **Deduplicate** — if a destination is already recorded, update the existing entry rather than creating a new one.
 
 ## Memory file template
 
@@ -50,4 +60,4 @@ type: reference
 
 ## Recall
 
-When starting `evaluate-backup-options` on a new project, read the `reference_backup_*` memories first so recommendations draw from the real pool.
+When starting `evaluate-backup-options` on a new project, read the `<plugin-data-dir>/references/backup_*.md` files first so recommendations draw from the real pool.
