@@ -24,7 +24,7 @@ For each legacy file that exists AND where `<plugin-data-dir>/references/backup_
 
 ## Path resolution
 
-Resolve the plugin's data directory as `$CLAUDE_USER_DATA/backup-planner/` if `CLAUDE_USER_DATA` is set; otherwise `$XDG_DATA_HOME/claude-plugins/backup-planner/` if `XDG_DATA_HOME` is set; otherwise `~/.local/share/claude-plugins/backup-planner/`. Create the directory (and a `references/` subdirectory) if it doesn't exist. See the canonical convention in the `meta-tools:plugin-data-storage` skill.
+Resolve the plugin's data directory as `$CLAUDE_USER_DATA/backup-planner/` if `CLAUDE_USER_DATA` is set; otherwise `$XDG_DATA_HOME/claude-plugins/backup-planner/` if `XDG_DATA_HOME` is set; otherwise `~/.local/share/claude-plugins/backup-planner/`. Create the directory (and a `references/` subdirectory) if it doesn't exist. See the canonical convention in the `claude-rudder:plugin-data-storage` skill.
 
 ## Steps
 
